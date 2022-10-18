@@ -2,7 +2,8 @@
 $conn = mysqli_connect('localhost', 'root', '', 'rokhmad');
 
 // function query untuk menampilkan semua data dalam table
-function query ($query) {
+function query ($query) 
+{
     global $conn;
     $result = mysqli_query($conn, $query);
     $rows = [];
@@ -33,24 +34,27 @@ function tambah($data)
     return mysqli_affected_rows($conn);
 }
 
-// function untuk mengubah data dalam table
-function edit($data) {
+function update($data)
+{
     global $conn;
 
-    // mengambil seluruh data yang telah di isi dalam form
-    $id = $data["id"];
+    // Mengambil data dari tambah
+    $idnih = $data['id'];
     $nama = htmlspecialchars($data["nama"]);
     $user = htmlspecialchars($data["user"]);
     $keterangan = htmlspecialchars($data["keterangan"]);
-    // query untuk menambah data dalam database
-    $query = "UPDATE tb_email SET 
-                id = '',
-                nama = '$nama',
-                keterangan = '$keterangan',
-                user = '$user',
-                WHERE id = $id";
-    // mysqli_query
+
+    $query = ("UPDATE tb_email SET nama='$nama', keterangan='$keterangan', user='$user' where id ='$idnih'");
     mysqli_query($conn, $query);
+    // mengalihkan ke halaman index.php
+    header("location:index.php");
+}
+
+// funtion untuk menghapus data dalam table
+function hapus($id) {
+    global $conn;
+    // query hapus
+    mysqli_query($conn, "DELETE FROM tb_email WHERE id = $id");
     // feedback untuk client
     return mysqli_affected_rows($conn);
 }
